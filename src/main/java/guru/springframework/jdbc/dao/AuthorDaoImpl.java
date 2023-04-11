@@ -3,8 +3,6 @@ package guru.springframework.jdbc.dao;
 import guru.springframework.jdbc.domain.Author;
 import guru.springframework.jdbc.repositories.AuthorRepository;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-
 
 /**
  * Created by jt on 8/28/21.
@@ -20,12 +18,12 @@ public class AuthorDaoImpl implements AuthorDao {
 
     @Override
     public Author getById(Long id) {
-        return authorRepository.getById(id);
+        return authorRepository.findById(id).get();
     }
 
     @Override
     public Author findAuthorByName(String firstName, String lastName) {
-        return null;
+        return authorRepository.findByFirstNameAndLastName(firstName, lastName).get();
     }
 
     @Override
@@ -33,13 +31,9 @@ public class AuthorDaoImpl implements AuthorDao {
         return authorRepository.save(author);
     }
 
-    @Transactional
     @Override
     public Author updateAuthor(Author author) {
-        Author foundAuthor = authorRepository.getById(author.getId());
-        foundAuthor.setFirstName(author.getFirstName());
-        foundAuthor.setLastName(author.getLastName());
-        return authorRepository.save(foundAuthor);
+        return authorRepository.save(author);
     }
 
     @Override
@@ -47,13 +41,3 @@ public class AuthorDaoImpl implements AuthorDao {
         authorRepository.deleteById(id);
     }
 }
-
-
-
-
-
-
-
-
-
-
