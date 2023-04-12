@@ -1,0 +1,15 @@
+package guru.springframework.jdbc.dao;
+
+import guru.springframework.jdbc.domain.Book;
+
+public interface BookDao {
+    Book getById(long id);
+
+    Book findBookByTitle(String title);
+
+    Book saveNewBook(Book book);
+
+    void updateBook(Book book);
+
+    void deleteBookById(Long id);
+}
