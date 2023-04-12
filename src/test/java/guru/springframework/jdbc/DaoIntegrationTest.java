@@ -140,6 +140,11 @@ public class DaoIntegrationTest {
     }
 
     @Test
+    void testGetAuthorByNameNotFound() {
+        assertThrows(NoSuchElementException.class, () -> authorDao.findAuthorByName("foo", "bar"));
+    }
+
+    @Test
     void testGetAuthor() {
 
         Author author = authorDao.getById(1L);
