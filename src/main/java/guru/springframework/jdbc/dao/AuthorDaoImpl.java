@@ -18,12 +18,12 @@ public class AuthorDaoImpl implements AuthorDao {
 
     @Override
     public Author getById(Long id) {
-        return authorRepository.findById(id).get();
+        return authorRepository.findById(id).orElseThrow();
     }
 
     @Override
     public Author findAuthorByName(String firstName, String lastName) {
-        return authorRepository.findByFirstNameAndLastName(firstName, lastName).get();
+        return authorRepository.findByFirstNameAndLastName(firstName, lastName).orElseThrow();
     }
 
     @Override
