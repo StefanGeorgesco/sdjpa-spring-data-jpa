@@ -1,6 +1,5 @@
 package guru.springframework.jdbc;
 
-import guru.springframework.jdbc.domain.Book;
 import guru.springframework.jdbc.repositories.BookRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +27,7 @@ public class BookRepositoryTest {
     @Test
     void testEmptyResultException() {
 
-        assertThrows(EmptyResultDataAccessException.class, () -> {
-            Book book = bookRepository.readByTitle("foobar4");
-        });
+        assertThrows(EmptyResultDataAccessException.class, () -> bookRepository.readByTitle("foobar4"));
     }
 
     @Test
