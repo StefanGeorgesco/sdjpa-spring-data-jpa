@@ -30,6 +30,13 @@ public class BookRepositoryTest {
     BookRepository bookRepository;
 
     @Test
+    void testBookJPANamedQuery() {
+        Book book = bookRepository.jpaNamed("Clean Code");
+
+        assertThat(book).isNotNull();
+    }
+
+    @Test
     void testBookQueryNative() {
         Book book = bookRepository.findBookByTitleNativeQuery("Clean Code");
 
@@ -70,7 +77,6 @@ public class BookRepositoryTest {
 
     @Test
     void testEmptyResultException() {
-
         assertThrows(EmptyResultDataAccessException.class, () -> bookRepository.readByTitle("foobar4"));
     }
 
@@ -81,7 +87,6 @@ public class BookRepositoryTest {
 
     @Test
     void testNoException() {
-
         assertNull(bookRepository.getByTitle("foo"));
     }
 }
