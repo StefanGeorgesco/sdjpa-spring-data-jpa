@@ -1,14 +1,15 @@
 package guru.springframework.jdbc;
 
-import guru.springframework.jdbc.dao.AuthorDao;
-import guru.springframework.jdbc.dao.BookDao;
+import guru.springframework.jdbc.dao.*;
 import guru.springframework.jdbc.domain.Author;
 import guru.springframework.jdbc.domain.Book;
+import guru.springframework.jdbc.repositories.AuthorRepository;
+import guru.springframework.jdbc.repositories.BookRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.NoSuchElementException;
@@ -21,14 +22,24 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  */
 @ActiveProfiles("local")
 @DataJpaTest
-@ComponentScan(basePackages = {"guru.springframework.jdbc.dao"})
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class DaoIntegrationTest {
-    @Autowired
-    AuthorDao authorDao;
 
     @Autowired
-    BookDao bookDao;
+    BookRepository bookRepository;
+
+    @Autowired
+    AuthorRepository authorRepository;
+
+    private BookDao bookDao;
+
+    private AuthorDao authorDao;
+
+    @BeforeEach
+    void setUp() {
+        bookDao = new BookDaoImpl(bookRepository);
+        authorDao = new AuthorDaoImpl(authorRepository);
+    }
 
     @Test
     void testDeleteBook() {

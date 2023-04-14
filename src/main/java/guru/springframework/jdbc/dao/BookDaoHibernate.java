@@ -18,7 +18,27 @@ public class BookDaoHibernate implements BookDao {
 
     @Override
     public List<Book> findAllBooksSort(Pageable pageable) {
-        return null;
+        EntityManager em = getEntityManager();
+        List<Book> books;
+        StringBuilder sb = new StringBuilder();
+        sb.append("select b from Book b ");
+
+        if (pageable.getSort().isSorted()) {
+            sb
+                    .append(" order by ")
+                    .append(pageable.getSort().toString().replace(":", ""));
+        }
+
+        try {
+            TypedQuery<Book> query = em.createQuery(sb.toString(), Book.class);
+            query.setFirstResult(Math.toIntExact(pageable.getOffset()));
+            query.setMaxResults(pageable.getPageSize());
+            books = query.getResultList();
+        } finally {
+            em.close();
+        }
+
+        return books;
     }
 
     @Override
@@ -40,7 +60,19 @@ public class BookDaoHibernate implements BookDao {
 
     @Override
     public List<Book> findAllBooks(int pageSize, int offset) {
-        return null;
+        EntityManager em = getEntityManager();
+        List<Book> books;
+
+        try {
+            TypedQuery<Book> query = em.createQuery("SELECT b FROM Book b", Book.class);
+            query.setFirstResult(Math.toIntExact(offset));
+            query.setMaxResults(pageSize);
+            books = query.getResultList();
+        } finally {
+            em.close();
+        }
+
+        return books;
     }
 
     @Override

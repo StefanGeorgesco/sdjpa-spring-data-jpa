@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ActiveProfiles;
 
 import jakarta.persistence.EntityManagerFactory;
@@ -23,7 +24,7 @@ class BookDaoHibernateTest {
     @Autowired
     EntityManagerFactory emf;
 
-    BookDao bookDao;
+    private BookDao bookDao;
 
     @BeforeEach
     void setUp() {
@@ -31,8 +32,14 @@ class BookDaoHibernateTest {
     }
 
     @Test
-    void findAllBooksSortByTitle() {
+    void findAllBooksSort() {
+        List<Book> books = bookDao.findAllBooksSort(PageRequest.of(0, 10,
+                Sort.by(List.of(Sort.Order.desc("title"), Sort.Order.asc("isbn")))));
 
+        assertThat(books).isNotNull();
+        assertThat(books.size()).isEqualTo(10);
+        assertThat(books.get(0).getTitle()).isEqualTo("Spring in Action, 6th Edition");
+        assertThat(books.get(0).getId()).isEqualTo(3L);
     }
 
     @Test
@@ -45,6 +52,10 @@ class BookDaoHibernateTest {
 
     @Test
     void testFindAllBooks() {
+        List<Book> books = bookDao.findAllBooks(10, 0);
+
+        assertThat(books).isNotNull();
+        assertThat(books.size()).isEqualTo(10);
     }
 
     @Test

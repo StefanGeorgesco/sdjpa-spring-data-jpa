@@ -18,11 +18,20 @@ public class BookDaoJDBCTemplate implements BookDao {
 
     @Override
     public List<Book> findAllBooksSort(Pageable pageable) {
-        String order = pageable.getSort().toString().replace(":", "");
-        String sql = "select * from book order by " + order + " limit ? offset ?";
+        StringBuilder sb = new StringBuilder();
+        sb.append("select * from book ");
+
+        if (pageable.getSort().isSorted()) {
+            sb
+                    .append("order by ")
+                    .append(pageable.getSort().toString().replace(":", ""))
+                    .append(" ");
+        }
+
+        sb.append("limit ? offset ?");
 
 
-        return jdbcTemplate.query(sql, getBookMapper(),
+        return jdbcTemplate.query(sb.toString(), getBookMapper(),
                 pageable.getPageSize(),
                 pageable.getOffset());
     }
