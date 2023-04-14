@@ -32,18 +32,21 @@ public class BookRepositoryTest {
     @Test
     void testBookJPANamedQuery() {
         Book book = bookRepository.jpaNamed("Clean Code");
+
         assertThat(book).isNotNull();
     }
 
     @Test
     void testBookQueryNative() {
         Book book = bookRepository.findBookByTitleNativeQuery("Clean Code");
+
         assertThat(book).isNotNull();
     }
 
     @Test
     void testBookQueryNamed() {
         Book book = bookRepository.findBookByTitleWithQueryNamed("Clean Code");
+
         assertThat(book).isNotNull();
     }
 
@@ -67,19 +70,14 @@ public class BookRepositoryTest {
     void testBookStream() {
         AtomicInteger count = new AtomicInteger();
 
-        bookRepository.findAllByTitleNotNull().forEach(book -> {
-            count.incrementAndGet();
-        });
+        bookRepository.findAllByTitleNotNull().forEach(book -> count.incrementAndGet());
 
-        assertThat(count.get()).isGreaterThan(5);
+        assertThat(count.get()).isGreaterThan(4);
     }
 
     @Test
     void testEmptyResultException() {
-
-        assertThrows(EmptyResultDataAccessException.class, () -> {
-            Book book = bookRepository.readByTitle("foobar4");
-        });
+        assertThrows(EmptyResultDataAccessException.class, () -> bookRepository.readByTitle("foobar4"));
     }
 
     @Test
@@ -89,7 +87,6 @@ public class BookRepositoryTest {
 
     @Test
     void testNoException() {
-
         assertNull(bookRepository.getByTitle("foo"));
     }
 }

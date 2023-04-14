@@ -5,13 +5,8 @@ import guru.springframework.jdbc.repositories.BookRepository;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.EntityNotFoundException;
-import javax.transaction.Transactional;
 import java.util.List;
 
-/**
- * Created by jt on 10/23/21.
- */
 @Component
 public class BookDaoImpl implements BookDao {
 
@@ -22,7 +17,7 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public List<Book> findAllBooksSortByTitle(Pageable pageable) {
+    public List<Book> findAllBooksSort(Pageable pageable) {
         return null;
     }
 
@@ -43,12 +38,12 @@ public class BookDaoImpl implements BookDao {
 
     @Override
     public Book getById(Long id) {
-        return bookRepository.getById(id);
+        return bookRepository.findById(id).orElseThrow();
     }
 
     @Override
     public Book findBookByTitle(String title) {
-        return bookRepository.findBookByTitle(title).orElseThrow(EntityNotFoundException::new);
+        return bookRepository.findByTitle(title).orElseThrow();
     }
 
     @Override
@@ -56,15 +51,9 @@ public class BookDaoImpl implements BookDao {
         return bookRepository.save(book);
     }
 
-    @Transactional
     @Override
     public Book updateBook(Book book) {
-        Book foundBook = bookRepository.getById(book.getId());
-        foundBook.setIsbn(book.getIsbn());
-        foundBook.setPublisher(book.getPublisher());
-        foundBook.setAuthorId(book.getAuthorId());
-        foundBook.setTitle(book.getTitle());
-        return bookRepository.save(foundBook);
+        return bookRepository.save(book);
     }
 
     @Override
@@ -72,14 +61,3 @@ public class BookDaoImpl implements BookDao {
         bookRepository.deleteById(id);
     }
 }
-
-
-
-
-
-
-
-
-
-
-

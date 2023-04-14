@@ -17,30 +17,30 @@ public class BookDaoJDBCTemplate implements BookDao {
     }
 
     @Override
-    public List<Book> findAllBooksSortByTitle(Pageable pageable) {
-        String sql = "SELECT * FROM book order by title " + pageable
-                .getSort().getOrderFor("title").getDirection().name()
-                + " limit ? offset ?";
+    public List<Book> findAllBooksSort(Pageable pageable) {
+        String order = pageable.getSort().toString().replace(":", "");
+        String sql = "select * from book order by " + order + " limit ? offset ?";
 
-        System.out.println(sql);
 
-        return jdbcTemplate.query(sql, getBookMapper(), pageable.getPageSize(), pageable.getOffset());
+        return jdbcTemplate.query(sql, getBookMapper(),
+                pageable.getPageSize(),
+                pageable.getOffset());
     }
 
     @Override
     public List<Book> findAllBooks(Pageable pageable) {
-        return jdbcTemplate.query("SELECT * FROM book limit ? offset ?", getBookMapper(), pageable.getPageSize(),
+        return jdbcTemplate.query("select * from book limit ? offset ?", getBookMapper(), pageable.getPageSize(),
                 pageable.getOffset());
     }
 
     @Override
     public List<Book> findAllBooks(int pageSize, int offset) {
-        return jdbcTemplate.query("SELECT * FROM book limit ? offset ?", getBookMapper(), pageSize, offset);
+        return jdbcTemplate.query("select * from book limit ? offset ?", getBookMapper(), pageSize, offset);
     }
 
     @Override
     public List<Book> findAllBooks() {
-        return jdbcTemplate.query("SELECT * FROM book", getBookMapper());
+        return jdbcTemplate.query("select * from book", getBookMapper());
     }
 
     @Override
@@ -76,7 +76,7 @@ public class BookDaoJDBCTemplate implements BookDao {
         jdbcTemplate.update("DELETE from book where id = ?", id);
     }
 
-    private BookMapper getBookMapper(){
+    private BookMapper getBookMapper() {
         return new BookMapper();
     }
 }

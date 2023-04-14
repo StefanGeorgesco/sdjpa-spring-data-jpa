@@ -1,10 +1,11 @@
 package guru.springframework.jdbc.domain;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+
 import java.util.Objects;
 
-@NamedQuery(name = "Book.jpaNamed", query = "FROM Book b where b.title = :title")
 @Entity
+@NamedQuery(name = "Book.jpaNamed", query = "from Book b where b.title = :title")
 public class Book {
 
     @Id
