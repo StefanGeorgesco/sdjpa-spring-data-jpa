@@ -14,7 +14,7 @@ public interface BookDao {
 
     List<Book> findAllBooks(Pageable pageable);
 
-    List<Book> findAllBooks(int limit, int offset);
+    List<Book> findAllBooks(int pageSize, int offset);
 
     List<Book> findAllBooks();
 
