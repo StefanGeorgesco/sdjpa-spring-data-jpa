@@ -39,7 +39,7 @@ class AuthorDaoJDBCTemplateTest {
     }
 
     @Test
-    void findAllAuthorsByLastNameSortLastNameDesc() {
+    void findAllAuthorsByLastNameSortFirstNameDesc() {
         List<Author> authors = authorDao.findAllAuthorsByLastName("Smith",
                 PageRequest.of(0, 10, Sort.by(Sort.Order.desc("first_name"))));
 
@@ -49,7 +49,7 @@ class AuthorDaoJDBCTemplateTest {
     }
 
     @Test
-    void findAllAuthorsByLastNameSortLastNameAsc() {
+    void findAllAuthorsByLastNameSortFirstNameAsc() {
         List<Author> authors = authorDao.findAllAuthorsByLastName("Smith",
                 PageRequest.of(0, 10, Sort.by(Sort.Order.asc("first_name"))));
 
